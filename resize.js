@@ -25,6 +25,64 @@
                 
             }
             
+            n(ev){
+                this.parent.style.top = ev.clientY +'px';
+                this.parent.style.height = this.parentHeight - (ev.clientY - this.offsetY) +'px';
+            }
+            
+            s(ev){
+                this.parent.style.height = ev.clientY - this.parent.offsetTop +'px';
+            }
+            
+            e(ev){
+                this.parent.style.width = ev.clientX - this.parent.offsetLeft +'px';
+            }
+            
+            w(ev){
+                this.parent.style.width = this.offsetX - ev.clientX + this.parentWidth +'px';
+                this.parent.style.left = ev.clientX +'px';
+            }
+            
+            setDirection(ev){
+                switch (ev.target.className){
+                    case 'handles nw-handle':
+                        this.n(ev);
+                        this.w(ev);
+                        break;
+
+                    case 'handles n-handle':
+                        this.n(ev);
+                        break;
+
+                    case 'handles ne-handle':
+                        this.n(ev);
+                        this.e(ev);
+                        break;
+
+                    case 'handles e-handle':
+                        this.e(ev);
+                        break;
+
+                    case 'handles se-handle':
+                        this.s(ev);
+                        this.e(ev);
+                        break;
+
+                    case 'handles s-handle':
+                        this.s(ev);
+                        break;
+
+                    case 'handles sw-handle':
+                        this.s(ev);
+                        this.w(ev);
+                        break;
+
+                    case 'handles w-handle':
+                        this.w(ev);
+                        break;
+                }
+            }
+            
             dragstart(ev){
                 ev.stopPropagation();
                 this.elem.style.opacity = 0;
@@ -36,55 +94,10 @@
             }
             
             drag(ev){
-                console.log("drag CHILD")
                 ev.stopPropagation();
                 if(this.moving)
-                {
-                    var newWidth = 0, newHeight = 0, parentOffsetX = 0, parentOffsetY = 0;
-                    
-                    switch (ev.target.className){
-                        case 'handles nw-handle':
-                            this.parent.style.width = this.offsetX - ev.clientX + this.parentWidth +'px';
-                            this.parent.style.height = this.offsetY - ev.clientY + this.parentHeight +'px';
-                            this.parent.style.top = ev.clientY +'px';
-                            this.parent.style.left = ev.clientX +'px';
-                            break;
-                            
-                        case 'handles n-handle':
-                            this.parent.style.top = ev.clientY +'px';
-                            this.parent.style.height = this.parentHeight - (ev.clientY - this.offsetY) +'px';
-                            break;
-                            
-                        case 'handles ne-handle':
-                            this.parent.style.height = this.offsetY - ev.clientY + this.parentHeight +'px';
-                            this.parent.style.width = ev.clientX - this.offsetX +'px';
-                            this.parent.style.top = ev.clientY +'px';
-                            break;
-                            
-                        case 'handles e-handle':
-                            this.parent.style.width = ev.clientX - this.parent.offsetLeft +'px';
-                            break;
-                            
-                        case 'handles se-handle':
-                            this.parent.style.height = ev.clientY - this.parent.offsetTop +'px';
-                            this.parent.style.width = ev.clientX - this.parent.offsetLeft +'px';
-                            break;
-                            
-                        case 'handles s-handle':
-                            this.parent.style.height = ev.clientY - this.parent.offsetTop +'px';
-                            break;
-                            
-                        case 'handles sw-handle':
-                            this.parent.style.height = ev.clientY - this.parent.offsetTop +'px';
-                            this.parent.style.width = this.offsetX - ev.clientX + this.parentWidth +'px';
-                            this.parent.style.left = ev.clientX +'px';
-                            break;
-                            
-                        case 'handles w-handle':
-                            this.parent.style.width = this.offsetX - ev.clientX + this.parentWidth +'px';
-                            this.parent.style.left = ev.clientX +'px';
-                            break;
-                    }
+                {                    
+                    this.setDirection(ev);
                 }
             }
             
@@ -98,50 +111,7 @@
                 
                 this.moving = false;
                 
-                
-                switch (ev.target.className){
-                    case 'handles nw-handle':
-                        this.parent.style.width = this.offsetX - ev.clientX + this.parentWidth +'px';
-                        this.parent.style.height = this.offsetY - ev.clientY + this.parentHeight +'px';
-                        this.parent.style.top = ev.clientY +'px';
-                        this.parent.style.left = ev.clientX +'px';
-                        break;
-
-                    case 'handles n-handle':
-                        this.parent.style.top = ev.clientY +'px';
-                        this.parent.style.height = this.parentHeight - (ev.clientY - this.offsetY) +'px';
-                        break;
-
-                    case 'handles ne-handle':
-                        this.parent.style.height = this.offsetY - ev.clientY + this.parentHeight +'px';
-                        this.parent.style.width = ev.clientX - this.offsetX +'px';
-                        this.parent.style.top = ev.clientY +'px';
-                        break;
-
-                    case 'handles e-handle':
-                        this.parent.style.width = ev.clientX - this.parent.offsetLeft +'px';
-                        break;
-
-                    case 'handles se-handle':
-                        this.parent.style.height = ev.clientY - this.parent.offsetTop +'px';
-                        this.parent.style.width = ev.clientX - this.parent.offsetLeft +'px';
-                        break;
-
-                    case 'handles s-handle':
-                        this.parent.style.height = ev.clientY - this.parent.offsetTop +'px';
-                        break;
-
-                    case 'handles sw-handle':
-                        this.parent.style.height = ev.clientY - this.parent.offsetTop +'px';
-                        this.parent.style.width = this.offsetX - ev.clientX + this.parentWidth +'px';
-                        this.parent.style.left = ev.clientX +'px';
-                        break;
-
-                    case 'handles w-handle':
-                        this.parent.style.width = this.offsetX - ev.clientX + this.parentWidth +'px';
-                        this.parent.style.left = ev.clientX +'px';
-                        break;
-                }
+                this.setDirection(ev);
             }
         }
         
@@ -158,7 +128,7 @@
                 this.x = 0;
                 this.y = 0;
                 
-                this.elem.addEventListener("click", ev => this.select(ev), false);
+                this.elem.addEventListener("mousedown", ev => this.select(ev), false);
                 this.elem.addEventListener("dragstart", ev => this.dragstart(ev), false);
                 this.elem.addEventListener("drag", ev => this.drag(ev), false);
                 this.elem.addEventListener("dragend", ev => this.dragend(ev), false);
