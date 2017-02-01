@@ -120,6 +120,8 @@
             constructor(elem){
                 this.elem = elem;
                 this.elem.className += " resizable";
+                this.elem.setAttribute('draggable', 'true');
+                this.elem.style.position = 'absolute';
                 
                 this.selected = false;
                 this.moving = false;
@@ -133,15 +135,11 @@
                 this.elem.addEventListener("drag", ev => this.drag(ev), false);
                 this.elem.addEventListener("dragend", ev => this.dragend(ev), false);
                 
-                this.nHandle = new Handle(this.elem, 'n');
-                this.neHandle = new Handle(this.elem, 'ne');
-                this.nwHandle = new Handle(this.elem, 'nw');
-                this.wHandle = new Handle(this.elem, 'w');
-                this.eHandle = new Handle(this.elem, 'e');
-                this.sHandle = new Handle(this.elem, 's');
-                this.swHandle = new Handle(this.elem, 'sw');
-                this.seHandle = new Handle(this.elem, 'se');
+                this.handles = ['n', 'ne', 'nw', 'w', 'e', 's', 'sw', 'se'];
                 
+                for(var i=0, length=this.handles.length; i<length; i++){
+                    var handle = new Handle(this.elem, this.handles[i]);   
+                }
             }
             
             /**
