@@ -11,8 +11,8 @@
         window.addEventListener("load", init);
         
         function init(){
-            ResizeJs.apply('.resizeMe');
-            ResizeJs.apply('#div-2');
+            ResizeJs.apply('.resizeMe', document.body);
+            ResizeJs.apply('#div-2', document.body);
         }
 
         
